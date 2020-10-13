@@ -1,65 +1,53 @@
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
+import Link from 'next/link'
+import { Layout } from '../components/Layout'
+import { useDispatch, useSelector } from 'react-redux'
+import { getPagePost } from '../redux/reducers'
+import styled from 'styled-components'
+import { Router, useRouter } from 'next/router'
 
-export default function Home() {
+const Container = styled.div`
+margin: 100px ;
+ul {
+  list-style: none;
+  cursor: pointer
+}
+`
+
+export default function Index() {
+const fetched = useSelector(state => state.fetchedData.data)
+  const router = useRouter()
+  
+  const RouteToPagePost = () => {
+    Router.push('/posts/postId:userId')
+  }
+const dispatch = useDispatch()
+  
+  React.useEffect(() => {
+  dispatch(getPagePost());
+}, [])
+
   return (
-    <div className={styles.container}>
-      <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
-      <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
-
-        <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>pages/index.js</code>
-        </p>
-
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h3>Documentation &rarr;</h3>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h3>Learn &rarr;</h3>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
-            className={styles.card}
-          >
-            <h3>Examples &rarr;</h3>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h3>Deploy &rarr;</h3>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
-      </main>
-
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <img src="/vercel.svg" alt="Vercel Logo" className={styles.logo} />
-        </a>
-      </footer>
-    </div>
-  )
+    <Container>
+      <div>
+        <Layout>
+          <Head>
+            <title> Main Last Post Page</title>
+            <meta charSet="utf-8" />
+          </Head>
+          <h2>Latest Post Page</h2>
+        </Layout>
+        {fetched.map((i) => (
+          <Link href={"/posts/postId"}>
+            <ul key={i}>
+              <li>{i.id}</li>
+              <li>{i.title}</li>
+              <li>{i.body}</li>
+            </ul>
+          </Link>
+        ))}
+      </div>
+    </Container>
+  );
 }
