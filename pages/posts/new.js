@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import Router, { useRouter } from "next/router";
 import Head from "next/Head";
 import { Layout } from "../../components/Layout";
 import styled from "styled-components";
-import { useDispatch, useSelector } from "react-redux";
-import axios from "axios";
+import { useDispatch } from "react-redux";
+import {  setPost } from "../../redux/reducers";
+
 
 const Component = styled.div`
   margin-top: 70px;
@@ -15,33 +16,22 @@ export default function createNewPost() {
     Router.push("/");
   };
   const dispatch = useDispatch();
-  const [state, setState] = React.useState([
-    {
-      body: "",
-    },
-  ]);
-  const [title, setTitle] = React.useState([
-    {
-      title: "",
-    },
-  ]);
-  console.log(title);
-  const handleForTitle = (e) => {
-    setTitle({ title: e.target.value });
+  const [title, setTitle] = useState("");
+  const [body, setBody] = useState("");
+
+  const onClick = () => {
+    const NewPost = [
+      {
+        id: `${Math.floor(Math.random() * (10)) }`,
+        title: title,
+        body: body,
+      },
+    ];
+    setTitle('')
+    setBody('')
+    dispatch(setPost(NewPost))
   };
 
-  const handleForBody = (e) => {
-    setState({ body: e.target.value });
-  };
-  const handleSubmit = (e) => {
-    e.preventDefault();
-  };
-  const postContent = () => {
-    axios.post("https://simple-blog-api.crew.red/posts", {
-      title: title.title,
-      body: state.body,
-    });
-  };
   return (
     <Component>
       <div>
@@ -50,22 +40,21 @@ export default function createNewPost() {
             <title>Create new post</title>
           </Head>
           <div>
-            <form onSubmit={handleSubmit}>
-              <input
-                type="text"
-                placeholder=" title"
-                value={title.title}
-                onChange={handleForTitle}
-              />
-              <hr />
-              <input
-                type="text"
-                placeholder="message"
-                value={state.body}
-                onChange={handleForBody}
-              />
-            </form>
-            <button onClick={postContent}>Send post</button>
+            <input
+              type="text"
+              placeholder=" title"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+            />
+            <hr />
+            <input
+              type="text"
+              placeholder="body"
+              value={body}
+              onChange={(e) => setBody(e.target.value)}
+            />
+
+            <button onClick={onClick}>Send post</button>
           </div>
           <button onClick={linkClick}>Back</button>
         </Layout>

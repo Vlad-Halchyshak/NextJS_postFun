@@ -16,7 +16,9 @@ ul {
 `
 
 export default function Index() {
-const fetched = useSelector(state => state.fetchedData.data)
+const posts = useSelector(state => state.fetchedData.data)
+  const post = useSelector(state => state.fetchedData.post)
+  
   const router = useRouter()
   
   const RouteToPagePost = () => {
@@ -38,7 +40,7 @@ const dispatch = useDispatch()
           </Head>
           <h2>Latest Post Page</h2>
         </Layout>
-        {fetched.map((i) => (
+        {posts.map((i) => (
           <Link href={"/posts/postId"}>
             <ul key={i}>
               <li>{i.id}</li>
@@ -47,6 +49,13 @@ const dispatch = useDispatch()
             </ul>
           </Link>
         ))}
+          {post.map((i) => (
+            <ul>
+              <li>{i.id}</li>
+            <li>{i.title}</li>
+            <li>{i.body}</li>
+          </ul>
+        ))} 
       </div>
     </Container>
   );

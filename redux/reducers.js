@@ -3,43 +3,24 @@ import { getPostAPI } from "../pages/api/hello";
 
 const initialState = {
   data: [],
+   post: [] 
   
-  /* newText: '', */
 };
 
-/* export const addPagePost = () => ({ type: "ADD_POSTS" });
-
-export const PostChangeActionCreator = (text) => ({type: "RENEW_POST", Postnew: text })
- */
-export const pagePostReducer = (state = initialState, action) => {
+ 
+export const PostReducer = (state = initialState, action) => {
   switch (action.type) {
     case "SET_POSTS":
       return {
         ...state,
         data: action.payload,
       };
-    case "SET_ONE_POST":
+    case "SET_POST":
       return {
         ...state,
-        data: action.data,
+        post:  action.payload ,
       };
-
-    /*  case "ADD_POSTS": {
-      let newPost = {
-        title: "some text",
-        body: state.newText,
-      };
-      return {
-        ...state,
-        data: [{ ...state.data, newPost }],
-      };
-    }
-    case "RENEW_POST": {
-      return {
-        ...state,
-        newText: action.Postnew,
-      };
-    } */
+    
     default:
       return state;
   }
@@ -48,22 +29,17 @@ export const pagePostReducer = (state = initialState, action) => {
 };
 
 
-export const setPagePost = (data) => ({ type: "SET_POSTS", payload: data })
+export const setPosts = (data) => ({ type: "SET_POSTS", payload: data })
 
-export const setOnePage = (data) => ({ type: "SET_ONE_POST", data });
+export const setPost = (post) => ({ type: "SET_POST", payload: post})
+
 
 
 export const getPagePost = () => async (dispatch) => {
   const data = await getPostAPI.fetchData()
-  dispatch (setPagePost(data))
-}
-export const addPagePostThunk = () => async (dispatch) => {
-  const data = await getPostAPI.postData()
-  dispatch(addPagePost(data));
+  dispatch(setPosts(data));
 }
 
-export const getPost = () => async (dispatch) => {
-  const data = await getPostAPI.getPostYeah( );
-  dispatch(setOnePage(data));
-}
+
+
 

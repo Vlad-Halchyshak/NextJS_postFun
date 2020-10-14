@@ -1,9 +1,9 @@
 import  { applyMiddleware, combineReducers, createStore }  from 'redux'
 import thunkMiddleware from 'redux-thunk'
-import {pagePostReducer} from '../redux/reducers'
+import { PostReducer} from '../redux/reducers'
 
 const rootReducer = combineReducers({
-fetchedData: pagePostReducer
+fetchedData: PostReducer
 })
 
 export const store = createStore(rootReducer, applyMiddleware(thunkMiddleware))
